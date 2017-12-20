@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<head>
+    <title>video</title>
+    <link rel="stylesheet" type="text/css" href="input.css"/>
+    <style>
+        body {
+            font-size: 13px;
+            background-color: #ddd; 
+        }
+        header, section, footer, aside, nav, article, figure{ 
+            display: block; 
+        }
+        #canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        form {
+            padding: 20px;
+        }
+        input[type="color"] {
+            margin: 0 0 0 10px;
+        }
+        .row {
+            height: 30px;
+        }
+        .row label {
+            display: inline-block;
+            width: 100px;
+            text-align: right
+        }
+        .video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 700;
+            height: 650px;
+            color: #ddd;
+            background-color: rgba(0, 0, 0, 0.6);
+            transform: translate(-50%, -50%);
+        }
+    </style>
+    <script src="./input.js" defer></script>
+</head>
+<body>
+    <div class="video"> 
+        <video  width="700" height="400" id="video" controls src="http://183.2.205.206/69756F085A73271C3C82F4323/03000808005A3920F342684EAED319A0DE1851-670F-191B-ADD1-C4762CE10066.mp4?ccode=0502&duration=391&expire=18000&psid=9d3d0829f89601b331db602d9fdf7319&ups_client_netip=0e936aad&ups_ts=1513751610&ups_userid=&utid=MfLAEiUaSRkCAQ6Taq0%2BFKEE&vid=XMzI0NTA0MjYyNA%3D%3D&vkey=A02b13c336483dc35c028402a9f281159"></video>
+        <canvas id="canvas" width="700" height="370"></canvas>
+        <form class="">
+            <div class="row">
+                <label>透明度(0-100):</label>
+                <input id="opacity" type="range" min="0" max="100" name="range"/>
+            </div>
+            <div class="row">
+                <label>文字大小:</label>
+                <input id="fontSize" type="range" min="16" max="32" name="range"/>
+            </div>
+            <div class="row">
+                <label>速度:</label>
+                <input id="speed" type="range" min="0" max="10" name="range"/>
+            </div>
+            <div class="row">
+                <label>颜色:</label>
+                <input type="color" id="color"/>
+            </div>   
+            <div class="row">
+                <label>弹幕位置:</label>
+                <input type="radio" class="position" name="position" value="all" checked/> 全部位置
+                <input type="radio" class="position" name="position" value="top"/>顶部
+                <input type="radio" class="position" name="position" value="bottom"/>底部
+            </div>
+            <div class="row">
+                <input type="text" id="content"/>
+                <button type="button" onclick="send()">发送弹幕</button> 
+            </div>
+        </form>
+    </div>
+
+    <script src="./barrage.js"></script>
+    <script>
+        // 弹幕数据
+        var dataBarrage = [{
+            value: 'speed设为0为非滚动',
+            time: 10, // 单位秒
+            speed: 0,
+            color: '#fff',
+            opacity: 50
+        }, {
+            value: 'time控制弹幕时间，单位秒',
+            color: '#fff',
+            time: 20,
+            speed: 0
+        }, {
+            value: '视频共21秒',
+            time: 32
+        }, {
+            value: '视频背景为白色',
+            time: 45
+        }, {
+            value: '视频为录制',
+            time: 50
+        }, {
+            value: '视频内容简单',
+            time: 63
+        }, {
+            value: '是为了让视频尺寸不至于过大',
+            time: 78
+        }, {
+            value: '省流量',
+            time: 85
+        }, {
+            value: '支持弹幕暂停（视频暂停）',
+            time: 90
+        }, {
+            value: 'add()方法新增弹幕',
+            time: 110
+        }, {
+            value: 'reset()方法重置弹幕',
+            time: 110
+        }, {
+            value: '颜色，字号，透明度可全局设置',
+            time: 130
+        }, {
+            value: '具体交互细节可参考页面源代码',
+            time: 140
+        }, {
+            value: '内容不错哦！',
+            time: 180,
+            color: '#ddd'
+        }];
+        var video = document.getElementById('video'),
+            canvas = document.getElementById('canvas'),
+            barrage = new Barrage(video, canvas, {
+                data: dataBarrage
+            });
+        function send() {
+            var opacity = document.getElementById('opacity').value,
+                fontSize = document.getElementById('fontSize').value,
+                content = document.getElementById('content').value,
+                speed = document.getElementById('speed').value,
+                color = document.getElementById('color').value,
+                positions = document.getElementsByClassName('position'),
+                position = '';
+            for (var i = 0, total = positions.length; i < total; i++) {
+                if(positions[i].checked) {
+                    position = positions[i].value;
+                }
+            }
+            barrage.add({
+                opacity: opacity,
+                fontSize: fontSize,
+                value: content,
+                color: color,
+                position: position,
+                time: video.currentTime,
+                speed: speed
+            });
+        }
+    </script>
+</body>
+</html>
