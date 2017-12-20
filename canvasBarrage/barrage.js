@@ -5,7 +5,7 @@ var Barrage = function(video, canvas, options) {
             opacity: 100,
             fontSize: 16,
             color: '#ffffff',
-            position: 'top',
+            position: 'all',
             speed: 2,
             data: [],
             value: ''
