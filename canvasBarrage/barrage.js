@@ -30,6 +30,7 @@ var Barrage = function(video, canvas, options) {
         time = video.currentTime,
         play = false;
 
+
     options = options || {};
 
     for (let key of Object.keys(defaults)) {
