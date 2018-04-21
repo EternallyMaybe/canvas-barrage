@@ -1,4 +1,5 @@
 var Barrage = function(video, canvas, options) {
+    
     if (!video || !canvas) return;
     
     var defaults = {
